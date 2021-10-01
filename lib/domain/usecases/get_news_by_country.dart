@@ -4,6 +4,7 @@ import '../entities/news_entity.dart';
 abstract class GetNewsByCountry {
   Future<List<NewsEntity>> call(String country);
 }
+
 class GetNewsByCountryImpl implements GetNewsByCountry {
   final NewsRepository repository;
 

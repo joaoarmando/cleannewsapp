@@ -7,5 +7,13 @@ class NewsEntity {
   final String urlToImage;
   final DateTime publishedAt;
 
-  NewsEntity(this.source, this.author, this.title, this.description, this.url, this.urlToImage, this.publishedAt);
+  NewsEntity({required this.source, 
+    required this.author, 
+    required this.title, 
+    required this.description, 
+    required this.url, 
+    required this.urlToImage, 
+    required this.publishedAt
+  });
+
 }
