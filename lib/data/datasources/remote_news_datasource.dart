@@ -1,5 +1,7 @@
+import '../../domain/errors/domain_error.dart';
 import '../../infra/http_adapter.dart';
 import '../../infra/http_client.dart';
+import '../../infra/http_errors.dart';
 import '../models/news_model.dart';
 
 abstract class RemoteNewsDatasource {
@@ -20,7 +22,8 @@ class RemoteNewsDatasourceImpl implements RemoteNewsDatasource {
   @override
   Future<List<NewsModel>> getNewsByCountry(String country) async {
     final endpoint = "$url?country=$country&apiKey=$apiKey";
-   
+
+    try {
       final response = await client.request(url: endpoint, method: HttpMethod.get);
 
       final articles = response["articles"] as List;
@@ -28,5 +31,13 @@ class RemoteNewsDatasourceImpl implements RemoteNewsDatasource {
       final news = articles.map((item) => NewsModel.fromJson(item)).toList();
 
       return news;
+    } on HttpError catch(error) {
+      
+      if (error == HttpError.tooManyRequests) {
+          throw DomainError.tryAgainLater;
+      }
+
+      throw DomainError.unexpected;
+    }
   }
 }

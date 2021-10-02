@@ -30,13 +30,13 @@ class HttpAdapter implements HttpClient {
         final data =  Map<String, dynamic>.from(response.data);
         return data;
     } else if (response.statusCode == 400) {
-        throw(HttpError.badRequest);
+        throw HttpError.badRequest;
     } else if (response.statusCode == 401) {
-        throw(HttpError.unauthorized);
+        throw HttpError.unauthorized;
     } else if (response.statusCode == 429) {
-        throw(HttpError.tooManyRequests);
+        throw HttpError.tooManyRequests;
     } else {
-        throw(HttpError.serverError);
+        throw HttpError.serverError;
     }
   }
 }
