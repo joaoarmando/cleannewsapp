@@ -1,6 +1,5 @@
-import 'package:cleannewsapp/external/infra/http_adapter.dart';
-import 'package:cleannewsapp/external/infra/http_client.dart';
-
+import '../../external/infra/http_adapter.dart';
+import '../../external/infra/http_client.dart';
 import '../models/news_model.dart';
 
 abstract class RemoteNewsDatasource {
@@ -13,8 +12,8 @@ class RemoteNewsDatasourceImpl implements RemoteNewsDatasource {
   final String apiKey;
   
   RemoteNewsDatasourceImpl({
-    required this.client, 
-    required this.url, 
+    required this.client,
+    required this.url,
     required this.apiKey
   });
 
