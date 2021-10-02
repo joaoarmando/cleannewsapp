@@ -1,7 +1,7 @@
 import '../../domain/errors/domain_error.dart';
-import '../../infra/http_adapter.dart';
-import '../../infra/http_client.dart';
-import '../../infra/http_errors.dart';
+import '../../infra/http/http_adapter.dart';
+import '../../infra/http/http_client.dart';
+import '../../infra/http/http_errors.dart';
 import '../models/news_model.dart';
 
 abstract class RemoteNewsDatasource {

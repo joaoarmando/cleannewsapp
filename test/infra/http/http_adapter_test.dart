@@ -1,6 +1,6 @@
-import 'package:cleannewsapp/infra/http_adapter.dart';
-import 'package:cleannewsapp/infra/http_client.dart';
-import 'package:cleannewsapp/infra/http_errors.dart';
+import 'package:cleannewsapp/infra/http/http_adapter.dart';
+import 'package:cleannewsapp/infra/http/http_client.dart';
+import 'package:cleannewsapp/infra/http/http_errors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
