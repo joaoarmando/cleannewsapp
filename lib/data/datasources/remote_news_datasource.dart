@@ -1,5 +1,5 @@
-import '../../external/infra/http_adapter.dart';
-import '../../external/infra/http_client.dart';
+import '../../infra/http_adapter.dart';
+import '../../infra/http_client.dart';
 import '../models/news_model.dart';
 
 abstract class RemoteNewsDatasource {

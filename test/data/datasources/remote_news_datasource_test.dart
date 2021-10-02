@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:cleannewsapp/data/datasources/remote_news_datasource.dart';
-import 'package:cleannewsapp/external/infra/http_adapter.dart';
-import 'package:cleannewsapp/external/infra/http_client.dart';
+import 'package:cleannewsapp/infra/http_adapter.dart';
+import 'package:cleannewsapp/infra/http_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
