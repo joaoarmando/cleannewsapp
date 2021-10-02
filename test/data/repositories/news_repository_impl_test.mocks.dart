@@ -7,6 +7,7 @@ import 'dart:async' as _i3;
 import 'package:cleannewsapp/data/datasources/remote_news_datasource.dart'
     as _i2;
 import 'package:cleannewsapp/data/models/news_model.dart' as _i4;
+import 'package:cleannewsapp/infra/network/networ_info.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -32,6 +33,22 @@ class MockRemoteNewsDatasource extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#getNewsByCountry, [country]),
               returnValue: Future<List<_i4.NewsModel>>.value(<_i4.NewsModel>[]))
           as _i3.Future<List<_i4.NewsModel>>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [NetworkInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNetworkInfo extends _i1.Mock implements _i5.NetworkInfo {
+  MockNetworkInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<bool> get isConnected =>
+      (super.noSuchMethod(Invocation.getter(#isConnected),
+          returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
   @override
   String toString() => super.toString();
 }
