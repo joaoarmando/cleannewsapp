@@ -1,6 +1,6 @@
 class NewsEntity {
   final String source;
-  final String author;
+  final String? author;
   final String title;
   final String description;
   final String url;
