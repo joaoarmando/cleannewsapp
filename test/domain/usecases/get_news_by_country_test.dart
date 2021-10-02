@@ -23,8 +23,9 @@ void main() {
   test('Should return a list of NewsEntity', () async {
       when(repository.getNewsByCountry(tCountry)).thenAnswer((_) async => <NewsEntity>[]);
 
-      final result = await getNewsByCountry("br");
+      final result = await getNewsByCountry(tCountry);
 
       expect(result, isA<List<NewsEntity>>());
   });
+
 }
