@@ -28,4 +28,11 @@ void main() {
       expect(result, isA<List<NewsEntity>>());
   });
 
+  test('Should call repository with the correct params', () async {
+      when(repository.getNewsByCountry(tCountry)).thenAnswer((_) async => <NewsEntity>[]);
+
+      getNewsByCountry(tCountry);
+
+      verify(repository.getNewsByCountry(tCountry));
+  });
 }
