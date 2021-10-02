@@ -28,9 +28,5 @@ class RemoteNewsDatasourceImpl implements RemoteNewsDatasource {
       final news = articles.map((item) => NewsModel.fromJson(item)).toList();
 
       return news;
-      
-
-
   }
-
 }

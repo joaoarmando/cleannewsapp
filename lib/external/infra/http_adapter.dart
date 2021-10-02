@@ -1,7 +1,7 @@
-import 'package:cleannewsapp/external/infra/http_errors.dart';
 import 'package:dio/dio.dart';
 
 import 'http_client.dart';
+import 'http_errors.dart';
 class HttpAdapter implements HttpClient {
   final Dio dio;
 

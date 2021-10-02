@@ -1,7 +1,6 @@
-import 'package:cleannewsapp/data/datasources/remote_news_datasource.dart';
-
 import '../../domain/entities/news_entity.dart';
 import '../../domain/repositories/news_repository.dart';
+import '../datasources/remote_news_datasource.dart';
 
 class NewsRepositoryImpl implements NewsRepository {
   final RemoteNewsDatasource remoteDatasource;

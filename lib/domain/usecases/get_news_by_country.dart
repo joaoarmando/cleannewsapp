@@ -1,6 +1,5 @@
-import 'package:cleannewsapp/domain/repositories/news_repository.dart';
-
 import '../entities/news_entity.dart';
+import '../repositories/news_repository.dart';
 abstract class GetNewsByCountry {
   Future<List<NewsEntity>> call(String country);
 }
