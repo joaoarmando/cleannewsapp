@@ -50,20 +50,36 @@ void main() {
     expect(controller.newsList.contains(tNewsEntity), true);
   });
 
-  test('Should set internetError as true when has no internet connection', () async {
-    when(repository.getNewsByCountry(newsCountry)).thenThrow(LocalStorageError.cacheError);
 
-    await controller.getNewsByCountry();
+  group('InternetError', () {
+    test('Should set internetError as true when has no internet connection', () async {
+      when(repository.getNewsByCountry(newsCountry)).thenThrow(LocalStorageError.cacheError);
 
-    expect(controller.internetError, true);
+      await controller.getNewsByCountry();
+
+      expect(controller.internetError, true);
+    });
+
+    test('Should set internetError as false when a list of NewsEntity is returned', () async {
+      when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
+      controller.internetError = true;
+
+      await controller.getNewsByCountry();
+
+      expect(controller.internetError, false);
+    });
+
   });
 
-  test('Should set internetError as false when a list of NewsEntity is returned', () async {
-    when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
-    controller.internetError = true;
+  group('unexpectedError', () {
+    test('Should set unexpectedError as true when an occurs', () async {
+      when(repository.getNewsByCountry(newsCountry)).thenThrow(Exception());
 
-    await controller.getNewsByCountry();
+      await controller.getNewsByCountry();
 
-    expect(controller.internetError, false);
+      expect(controller.unexpectedError, true);
+    });
   });
+
+
 }
