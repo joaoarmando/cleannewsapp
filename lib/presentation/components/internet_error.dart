@@ -1,6 +1,7 @@
-import 'package:cleannewsapp/presentation/components/subtitle1.dart';
-import 'package:cleannewsapp/presentation/components/subtitle2.dart';
 import 'package:flutter/material.dart';
+
+import 'subtitle1.dart';
+import 'subtitle2.dart';
 
 class InternetError extends StatelessWidget {
   final VoidCallback? retry;
