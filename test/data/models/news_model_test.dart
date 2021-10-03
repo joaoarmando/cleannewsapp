@@ -22,4 +22,17 @@ void main() {
     expect(newsModel.url, newsJson["url"]);
     expect(newsModel.publishedAt, DateTime.parse(newsJson["publishedAt"]));
   });
+
+  test('Should convert a newsModel into a json', () {
+    final newsModel = NewsModel.fromJson(newsJson);
+
+    final json = newsModel.toJson();
+
+    expect(json["source"]["name"], newsModel.source);
+    expect(json["author"], newsModel.author);
+    expect(json["title"], newsModel.title);
+    expect(json["description"], newsModel.description);
+    expect(json["url"], newsModel.url);
+    expect(json["publishedAt"], newsModel.publishedAt.toIso8601String());
+  });
 }
