@@ -24,7 +24,7 @@ void main() {
   });
 
   test('Should cache a list of news using the country as key', () {
-      localDatasource.cacheNewsByCountry(country: tCountry, news: tNewsListModel.newsList);
+      localDatasource.cacheNewsByCountry(country: tCountry, news: tNewsListModel.news);
 
       verify(localStorage.save<String>(key: tCountry, data: jsonEncode(tNewsListModel.toJson())));
   });
