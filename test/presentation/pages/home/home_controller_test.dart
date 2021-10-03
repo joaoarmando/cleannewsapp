@@ -32,6 +32,12 @@ void main() {
     );
   });
 
+  test('Should set the news country correctly', () {
+    controller.setNewsCountry("another_country");
+
+    expect(controller.country, "another_country");
+  });
+
   test('Should add NewsEntity into a newsList', () async {
     when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
 
