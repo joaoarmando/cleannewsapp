@@ -4,7 +4,7 @@ import 'package:cleannewsapp/data/models/news_model.dart';
 import 'package:cleannewsapp/data/repositories/news_repository_impl.dart';
 import 'package:cleannewsapp/domain/errors/domain_error.dart';
 import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
-import 'package:cleannewsapp/infra/network/networ_info.dart';
+import 'package:cleannewsapp/infra/network/network_info.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

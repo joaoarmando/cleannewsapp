@@ -1,12 +1,11 @@
-import 'package:cleannewsapp/data/models/news_model.dart';
-
 import '../../domain/entities/news_entity.dart';
 import '../../domain/errors/domain_error.dart';
 import '../../domain/repositories/news_repository.dart';
 import '../../infra/local_storage/local_storage_errors.dart';
-import '../../infra/network/networ_info.dart';
+import '../../infra/network/network_info.dart';
 import '../datasources/local_news_datasource.dart';
 import '../datasources/remote_news_datasource.dart';
+import '../models/news_model.dart';
 
 class NewsRepositoryImpl implements NewsRepository {
   final LocalNewsDatasource localDatasource;

@@ -9,7 +9,7 @@ import 'package:cleannewsapp/data/datasources/local_news_datasource.dart'
 import 'package:cleannewsapp/data/datasources/remote_news_datasource.dart'
     as _i5;
 import 'package:cleannewsapp/data/models/news_model.dart' as _i4;
-import 'package:cleannewsapp/infra/network/networ_info.dart' as _i6;
+import 'package:cleannewsapp/infra/network/network_info.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
