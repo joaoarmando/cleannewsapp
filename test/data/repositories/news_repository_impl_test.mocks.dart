@@ -4,10 +4,12 @@
 
 import 'dart:async' as _i3;
 
-import 'package:cleannewsapp/data/datasources/remote_news_datasource.dart'
+import 'package:cleannewsapp/data/datasources/local_news_datasource.dart'
     as _i2;
+import 'package:cleannewsapp/data/datasources/remote_news_datasource.dart'
+    as _i5;
 import 'package:cleannewsapp/data/models/news_model.dart' as _i4;
-import 'package:cleannewsapp/infra/network/networ_info.dart' as _i5;
+import 'package:cleannewsapp/infra/network/networ_info.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -19,11 +21,32 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
+/// A class which mocks [LocalNewsDatasource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocalNewsDatasource extends _i1.Mock
+    implements _i2.LocalNewsDatasource {
+  MockLocalNewsDatasource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<void> cacheNewsByCountry(
+          {String? country, List<_i4.NewsModel>? news}) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #cacheNewsByCountry, [], {#country: country, #news: news}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  String toString() => super.toString();
+}
+
 /// A class which mocks [RemoteNewsDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRemoteNewsDatasource extends _i1.Mock
-    implements _i2.RemoteNewsDatasource {
+    implements _i5.RemoteNewsDatasource {
   MockRemoteNewsDatasource() {
     _i1.throwOnMissingStub(this);
   }
@@ -40,7 +63,7 @@ class MockRemoteNewsDatasource extends _i1.Mock
 /// A class which mocks [NetworkInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNetworkInfo extends _i1.Mock implements _i5.NetworkInfo {
+class MockNetworkInfo extends _i1.Mock implements _i6.NetworkInfo {
   MockNetworkInfo() {
     _i1.throwOnMissingStub(this);
   }
