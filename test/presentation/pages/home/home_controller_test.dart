@@ -79,6 +79,16 @@ void main() {
 
       expect(controller.unexpectedError, true);
     });
+
+    test('Should set unexpectedError as false when a list of NewsEntity is returned', () async {
+      when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
+      controller.unexpectedError = true;
+
+      await controller.getNewsByCountry();
+
+      expect(controller.unexpectedError, false);
+    });
+
   });
 
 
