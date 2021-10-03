@@ -32,7 +32,7 @@ class App extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
-            elevation: 1,
+            elevation: 0.5,
             titleTextStyle: TextStyle(
               fontSize: 20,
               color: Colors.black,
@@ -44,6 +44,7 @@ class App extends StatelessWidget {
           primaryColorLight: primaryColorLight,
           colorScheme: const ColorScheme.light(primary: primaryColor),
           backgroundColor: Colors.white,
+          scaffoldBackgroundColor: Colors.white,
           textTheme: const TextTheme(
             subtitle1: TextStyle(
               fontSize: 14,

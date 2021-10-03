@@ -1,3 +1,4 @@
+import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../domain/repositories/news_repository.dart';
@@ -15,6 +16,9 @@ abstract class _HomeControllerBase with Store {
   @observable
   bool isLoading = false;
 
+  @observable
+  bool internetError = false;
+
   ObservableList newsList = ObservableList();
 
   _HomeControllerBase({required this.newsRepository}) {
@@ -23,10 +27,17 @@ abstract class _HomeControllerBase with Store {
 
   @action
   Future<void> getNewsByCountry() async {
+    internetError = false;
     _changeLoadingStatus(true);
-
-    final news = await _getNewsByCountry(country);
-    newsList.addAll(news);
+    
+    try {
+      final news = await _getNewsByCountry(country);
+      newsList.addAll(news);
+    } on LocalStorageError catch(error) {
+      if (error == LocalStorageError.cacheError) {
+          internetError = true;
+      }
+    }
 
     _changeLoadingStatus(false);
   }

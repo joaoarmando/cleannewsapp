@@ -1,3 +1,5 @@
+import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
+
 import '../entities/news_entity.dart';
 import '../repositories/news_repository.dart';
 abstract class GetNewsByCountry {

@@ -9,6 +9,7 @@ import '../../../domain/repositories/news_repository.dart';
 import '../../../infra/http/http_adapter.dart';
 import '../../../infra/local_storage/local_storage_adapter.dart';
 import '../../../infra/network/network_info.dart';
+import '../../components/internet_error.dart';
 import '../../components/loading_indicator.dart';
 import 'components/news_card.dart';
 import 'home_controller.dart';
@@ -23,8 +24,44 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late HomeController homeController;
   late NewsRepository newsRepository;
+
   @override
   void initState() {
+    _setupPage();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("CleanNewsApp"),
+      ),
+      body: Observer(builder: (_) {
+
+        if (homeController.isLoading) {
+          return const Center(
+            child:LoadingIndicator()
+          );
+        } else if (homeController.internetError) {
+          return Center(
+            child: InternetError(retry: homeController.getNewsByCountry)
+          );
+        }
+
+        return ListView.builder(
+          itemCount: homeController.newsList.length,
+          itemBuilder: (_, index) {
+            final news = homeController.newsList[index];
+            return NewsCard(news: news);
+          }
+        );
+      },
+      ),
+    );
+  }
+
+  void _setupPage() {
     final localStorage = context.read<LocalStorageAdapter>();
     final httpAdapter = context.read<HttpAdapter>();
     final networkInfo = context.read<NetworkInfoImpl>();
@@ -41,30 +78,6 @@ class _HomePageState extends State<HomePage> {
 
     homeController = HomeController(newsRepository: newsRepository);
     homeController.getNewsByCountry();
-    super.initState();
   }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("CleanNewsApp"),
-      ),
-      body: Observer(builder: (_) {
-        if (homeController.isLoading) {
-          return const Center(
-            child:LoadingIndicator()
-          );
-        }
 
-        return ListView.builder(
-          itemCount: homeController.newsList.length,
-          itemBuilder: (_, index) {
-            final news = homeController.newsList[index];
-            return NewsCard(news: news);
-          }
-        );
-      },
-      ),
-    );
-  }
 }
