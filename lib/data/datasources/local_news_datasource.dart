@@ -24,7 +24,7 @@ class LocalNewsDatasourceImpl implements LocalNewsDatasource {
   @override
   Future<List<NewsModel>> getNewsByCountryFromCache({required String country}) async {
     final newsJsonString = await localStorage.get<String>(key: country);
-    if (newsJsonString) {
+    if (newsJsonString != null) {
         final news = NewsListModel.fromJson(jsonDecode(newsJsonString)).news;
         return news;
     }
