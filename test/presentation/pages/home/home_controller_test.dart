@@ -1,5 +1,6 @@
 import 'package:cleannewsapp/domain/entities/news_entity.dart';
 import 'package:cleannewsapp/domain/repositories/news_repository.dart';
+import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
 import 'package:cleannewsapp/presentation/pages/home/home_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -47,5 +48,22 @@ void main() {
 
     expect(controller.newsList.length, 1);
     expect(controller.newsList.contains(tNewsEntity), true);
+  });
+
+  test('Should set internetError as true when has no internet connection', () async {
+    when(repository.getNewsByCountry(newsCountry)).thenThrow(LocalStorageError.cacheError);
+
+    await controller.getNewsByCountry();
+
+    expect(controller.internetError, true);
+  });
+
+  test('Should set internetError as false when a list of NewsEntity is returned', () async {
+    when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
+    controller.internetError = true;
+
+    await controller.getNewsByCountry();
+
+    expect(controller.internetError, false);
   });
 }
