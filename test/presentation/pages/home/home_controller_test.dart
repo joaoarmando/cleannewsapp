@@ -3,6 +3,7 @@ import 'package:cleannewsapp/domain/repositories/news_repository.dart';
 import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
 import 'package:cleannewsapp/presentation/pages/home/home_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobx/mobx.dart' as mobx;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -48,6 +49,17 @@ void main() {
 
     expect(controller.newsList.length, 1);
     expect(controller.newsList.contains(tNewsEntity), true);
+  });
+
+  test('Should set isLoading as true while retrieving data and false at the end', () async {
+    when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
+    final emitedLoadingStates = [];
+    
+    final dispose = mobx.reaction((_) => controller.isLoading, (newValue) => emitedLoadingStates.add(newValue));
+
+    await controller.getNewsByCountry();
+    expect(emitedLoadingStates, equals([true,false]));
+    dispose();
   });
 
 
