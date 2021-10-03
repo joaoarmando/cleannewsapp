@@ -16,13 +16,20 @@ void main() {
   late NewsRepository repository;
   late NewsEntity tNewsEntity;
 
+  PostExpectation _mockRepositoryRequest()
+   =>  when(repository.getNewsByCountry(newsCountry));
+
+  void _mockRepositoryResponse()
+   => _mockRepositoryRequest().thenAnswer((_) async => [tNewsEntity]);
+
+  void _mockRepositoryException(dynamic excpetion) 
+    => _mockRepositoryRequest().thenThrow(excpetion);
+
   setUp(() {
+    newsCountry = "any_country";
     repository = MockNewsRepository();
     controller = HomeController(newsRepository: repository);
-
-    newsCountry = "any_country";
     controller.setNewsCountry(newsCountry);
-
     tNewsEntity = NewsEntity(
       source: "any_source",
       author: "any_author",
@@ -32,6 +39,7 @@ void main() {
       urlToImage: "any_urlToImage",
       publishedAt: DateTime.now()
     );
+    _mockRepositoryResponse();
   });
 
   test('Should set the news country correctly', () {
@@ -41,8 +49,6 @@ void main() {
   });
 
   test('Should add NewsEntity into a newsList', () async {
-    when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
-
     expect(controller.newsList.length, 0);
 
     await controller.getNewsByCountry();
@@ -52,7 +58,6 @@ void main() {
   });
 
   test('Should set isLoading as true while retrieving data and false at the end', () async {
-    when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
     final emitedLoadingStates = [];
     
     final dispose = mobx.reaction((_) => controller.isLoading, (newValue) => emitedLoadingStates.add(newValue));
@@ -65,7 +70,7 @@ void main() {
 
   group('InternetError', () {
     test('Should set internetError as true when has no internet connection', () async {
-      when(repository.getNewsByCountry(newsCountry)).thenThrow(LocalStorageError.cacheError);
+      _mockRepositoryException(LocalStorageError.cacheError);
 
       await controller.getNewsByCountry();
 
@@ -73,7 +78,6 @@ void main() {
     });
 
     test('Should set internetError as false when a list of NewsEntity is returned', () async {
-      when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
       controller.internetError = true;
 
       await controller.getNewsByCountry();
@@ -85,7 +89,7 @@ void main() {
 
   group('unexpectedError', () {
     test('Should set unexpectedError as true when an occurs', () async {
-      when(repository.getNewsByCountry(newsCountry)).thenThrow(Exception());
+      _mockRepositoryException(Exception());
 
       await controller.getNewsByCountry();
 
@@ -93,7 +97,6 @@ void main() {
     });
 
     test('Should set unexpectedError as false when a list of NewsEntity is returned', () async {
-      when(repository.getNewsByCountry(newsCountry)).thenAnswer((_) async => [tNewsEntity]);
       controller.unexpectedError = true;
 
       await controller.getNewsByCountry();
