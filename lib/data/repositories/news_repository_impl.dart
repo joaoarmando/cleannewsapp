@@ -1,3 +1,5 @@
+import 'package:cleannewsapp/data/models/news_model.dart';
+
 import '../../domain/entities/news_entity.dart';
 import '../../domain/errors/domain_error.dart';
 import '../../domain/repositories/news_repository.dart';
@@ -19,18 +21,18 @@ class NewsRepositoryImpl implements NewsRepository {
 
   @override
   Future<List<NewsEntity>> getNewsByCountry(String country) async {
+    late final List<NewsModel> news;
     try {
       if (await networkInfo.isConnected) {
-          final news = await remoteDatasource.getNewsByCountry(country);
+          news = await remoteDatasource.getNewsByCountry(country);
 
           await localDatasource.cacheNewsByCountry(country: country, news: news);
-
-          return news.map((item) => item.toEntity()).toList();
       } else {
-          final news = await localDatasource.getNewsByCountryFromCache(country: country);
-
-          return news.map((item) => item.toEntity()).toList();
+          news = await localDatasource.getNewsByCountryFromCache(country: country);
       }
+
+      return news.map((item) => item.toEntity()).toList();
+
     } on LocalStorageError catch (error) {
       if (error == LocalStorageError.cacheError) {
           throw DomainError.noInternetConnection;
