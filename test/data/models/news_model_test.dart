@@ -9,7 +9,7 @@ void main() {
   late Map<String,dynamic> newsJson;
 
   setUp(() {
-    newsJson = jsonDecode(fixture("news_model.json"));
+    newsJson = jsonDecode(fixture("news.json"));
   });
 
   test('Should convert a json in to a News Model', () {

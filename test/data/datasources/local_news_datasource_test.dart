@@ -18,7 +18,7 @@ void main() {
 
   setUp(() {
     tCountry = "br";
-    tNewsListModel = NewsListModel.fromJson(jsonDecode(fixture("news_list_model.json")));
+    tNewsListModel = NewsListModel.fromJson(jsonDecode(fixture("news_list.json")));
     localStorage = MockLocalStorage();
     localDatasource = LocalNewsDatasourceImpl(localStorage);
   });
