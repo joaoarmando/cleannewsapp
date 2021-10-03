@@ -17,11 +17,14 @@ void main() {
   late NetworkInfo networkInfo;
   late NewsRepositoryImpl repository;
 
-  _mockHasInternetConnection()
-    => when(networkInfo.isConnected).thenAnswer((_) async => true);
+  _mockNetworkInfo({bool hasConnection = true})
+    => when(networkInfo.isConnected).thenAnswer((_) async => hasConnection);
 
   _mockExpectedRemoteDatasourceResponse()
     => when(remoteDatasource.getNewsByCountry("any_country")).thenAnswer((_) async => <NewsModel>[]);  
+
+  _mockExpectedLocalDatasourceResponse()
+    => when(localDatasource.getNewsByCountryFromCache(country: "any_country")).thenAnswer((_) async => <NewsModel>[]);  
 
   setUp(() {
     remoteDatasource = MockRemoteNewsDatasource();
@@ -32,13 +35,13 @@ void main() {
       remoteDatasource: remoteDatasource,
       networkInfo: networkInfo
     );
-    _mockExpectedRemoteDatasourceResponse();
   });
 
   group('Device is online', () {
 
     setUp(() {
-      _mockHasInternetConnection();
+      _mockNetworkInfo();
+      _mockExpectedRemoteDatasourceResponse();
     });
 
     test('Should call remoteNewsDatasource if has internet connection', () async {
@@ -51,6 +54,21 @@ void main() {
       await repository.getNewsByCountry("any_country");
 
       verify(localDatasource.cacheNewsByCountry(country: "any_country", news: <NewsModel>[]));
+    });
+
+  });
+
+  group('Device is offline', () {
+
+    setUp(() {
+      _mockNetworkInfo(hasConnection: false);
+      _mockExpectedLocalDatasourceResponse();
+    });
+
+    test('Should call localNewsDatasource if has no internet connection', () async {
+      await repository.getNewsByCountry("any_country");
+
+      verify(localDatasource.getNewsByCountryFromCache(country: "any_country"));
     });
 
   });

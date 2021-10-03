@@ -39,6 +39,14 @@ class MockLocalNewsDatasource extends _i1.Mock
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
+  _i3.Future<List<_i4.NewsModel>> getNewsByCountryFromCache(
+          {String? country}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #getNewsByCountryFromCache, [], {#country: country}),
+              returnValue: Future<List<_i4.NewsModel>>.value(<_i4.NewsModel>[]))
+          as _i3.Future<List<_i4.NewsModel>>);
+  @override
   String toString() => super.toString();
 }
 

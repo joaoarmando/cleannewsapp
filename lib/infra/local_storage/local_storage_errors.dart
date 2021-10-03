@@ -1,0 +1,3 @@
+enum LocalStorageError {
+  cacheError
+}

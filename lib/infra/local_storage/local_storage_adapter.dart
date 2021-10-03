@@ -17,9 +17,9 @@ class LocalStorageAdapter implements LocalStorage {
   }
 
   @override
-  Future<dynamic> get<T>({required String key}) async {
+  Future<T> get<T>({required String key}) async {
     if (T == String) {
-      return _prefs.getString(key);
+      return _prefs.getString(key) as T;
     } else {
       throw UnimplementedError("Method not supported");
     }  

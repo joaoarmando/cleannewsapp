@@ -1,4 +1,5 @@
 enum DomainError {
   unexpected,
-  tryAgainLater
+  tryAgainLater,
+  noConnection
 }

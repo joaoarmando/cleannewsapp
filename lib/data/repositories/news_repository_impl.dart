@@ -25,7 +25,9 @@ class NewsRepositoryImpl implements NewsRepository {
 
         return news.map((item) => item.toEntity()).toList();
     } else {
-      throw UnimplementedError();
+        final news = await localDatasource.getNewsByCountryFromCache(country: country);
+
+        return news.map((item) => item.toEntity()).toList();
     }
   }
   
