@@ -9,7 +9,7 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
-  String country = "br";
+  String country = "us";
   late final NewsRepository newsRepository;
   late final GetNewsByCountry _getNewsByCountry;
 
@@ -47,6 +47,9 @@ abstract class _HomeControllerBase with Store {
 
     _changeLoadingStatus(false);
   }
+
+  @action
+  void setNewsCountry(String newsCountry) => country = newsCountry; 
 
   void _changeLoadingStatus(bool loading) => isLoading = loading;
 }

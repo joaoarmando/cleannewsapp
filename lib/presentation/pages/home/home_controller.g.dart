@@ -63,6 +63,20 @@ mixin _$HomeController on _HomeControllerBase, Store {
     return _$getNewsByCountryAsyncAction.run(() => super.getNewsByCountry());
   }
 
+  final _$_HomeControllerBaseActionController =
+      ActionController(name: '_HomeControllerBase');
+
+  @override
+  void setNewsCountry(String newsCountry) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.setNewsCountry');
+    try {
+      return super.setNewsCountry(newsCountry);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
