@@ -1,5 +1,5 @@
 enum DomainError {
   unexpected,
   tryAgainLater,
-  noConnection
+  noInternetConnection
 }

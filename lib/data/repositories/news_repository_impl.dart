@@ -1,8 +1,9 @@
-import 'package:cleannewsapp/data/datasources/local_news_datasource.dart';
-import 'package:cleannewsapp/infra/network/networ_info.dart';
-
 import '../../domain/entities/news_entity.dart';
+import '../../domain/errors/domain_error.dart';
 import '../../domain/repositories/news_repository.dart';
+import '../../infra/local_storage/local_storage_errors.dart';
+import '../../infra/network/networ_info.dart';
+import '../datasources/local_news_datasource.dart';
 import '../datasources/remote_news_datasource.dart';
 
 class NewsRepositoryImpl implements NewsRepository {
@@ -18,17 +19,25 @@ class NewsRepositoryImpl implements NewsRepository {
 
   @override
   Future<List<NewsEntity>> getNewsByCountry(String country) async {
-    if (await networkInfo.isConnected) {
-        final news = await remoteDatasource.getNewsByCountry(country);
+    try {
+      if (await networkInfo.isConnected) {
+          final news = await remoteDatasource.getNewsByCountry(country);
 
-        await localDatasource.cacheNewsByCountry(country: country, news: news);
+          await localDatasource.cacheNewsByCountry(country: country, news: news);
 
-        return news.map((item) => item.toEntity()).toList();
-    } else {
-        final news = await localDatasource.getNewsByCountryFromCache(country: country);
+          return news.map((item) => item.toEntity()).toList();
+      } else {
+          final news = await localDatasource.getNewsByCountryFromCache(country: country);
 
-        return news.map((item) => item.toEntity()).toList();
-    }
+          return news.map((item) => item.toEntity()).toList();
+      }
+    } on LocalStorageError catch (error) {
+      if (error == LocalStorageError.cacheError) {
+          throw DomainError.noInternetConnection;
+      } else {
+        throw DomainError.unexpected;
+      }
+    }    
   }
   
 }
