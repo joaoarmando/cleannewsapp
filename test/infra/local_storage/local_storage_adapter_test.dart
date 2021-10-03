@@ -16,20 +16,39 @@ void main() {
     localStorage = LocalStorageAdapter(prefs);
   });
 
-  test('Should save a string on a storage', () async {
-    when(prefs.setString("any_key", "any_value")).thenAnswer((_) async => true);
+  group("Save on storage", () {
+    test('Should save a string on a storage', () async {
+      when(prefs.setString("any_key", "any_value")).thenAnswer((_) async => true);
 
-    await localStorage.save(key: "any_key", data: "any_value");
+      await localStorage.save<String>(key: "any_key", data: "any_value");
 
-    verify(prefs.setString("any_key", "any_value"));
+      verify(prefs.setString("any_key", "any_value"));
+    });
+
+    test('Should aathrows UnimplementedError if type is not suported', () {
+      final future = localStorage.save<Map>(key: "any_key", data: {"any_map_key": "any_map_value"});
+
+      expect(future, throwsA(isA<UnimplementedError>()));
+    });
+
   });
 
-  test('Should restore a string on a storage', () async {
-    when(prefs.getString("any_key")).thenReturn("any_saved_value");
+  group("Get from storage", () {
+    test('Should restore a string on a storage', () async {
+      when(prefs.getString("any_key")).thenReturn("any_saved_value");
 
-    final result = await localStorage.get<String>(key: "any_key");
+      final result = await localStorage.get<String>(key: "any_key");
 
-    verify(prefs.getString("any_key"));
-    expect(result, equals("any_saved_value"));
+      verify(prefs.getString("any_key"));
+      expect(result, equals("any_saved_value"));
+    });
+
+    test('Should throws UnimplementedError if type is not suported', () {
+      final future = localStorage.get<Map>(key: "any_key");
+
+      expect(future, throwsA(isA<UnimplementedError>()));
+    });
+
   });
+
 }

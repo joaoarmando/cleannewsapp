@@ -8,8 +8,8 @@ class LocalStorageAdapter implements LocalStorage {
   LocalStorageAdapter(this._prefs);
 
   @override
-  Future<void> save({required String key, required dynamic data}) async {
-    if (data.runtimeType == String) {
+  Future<void> save<T>({required String key, required dynamic data}) async {
+    if (T == String) {
       await _prefs.setString(key, data);
     } else {
       throw UnimplementedError("Method not supported");
