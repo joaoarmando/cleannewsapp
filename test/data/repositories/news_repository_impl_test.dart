@@ -76,6 +76,7 @@ void main() {
  
       final future = repository.getNewsByCountry("any_country");
 
+      verifyNever(remoteDatasource.getNewsByCountry("any_country"));
       expect(future, throwsA(DomainError.noInternetConnection));
     });
 
