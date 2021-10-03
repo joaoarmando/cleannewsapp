@@ -1,0 +1,30 @@
+{
+  "newsList": [
+    {
+      "source": {
+        "id": null,
+        "name": "Seeking Alpha"
+      },
+      "author": "Steven Fiorillo",
+      "title": "Nvidia's Valuation Isn't Justifiable After Reading Through Intel's Numbers",
+      "description": "Intel's market cap is less than half of Nvidia's, yet Intel generates much more revenue, profit, and free cash flow.",
+      "url": "https://seekingalpha.com/article/4457792-nvidias-valuation-isnt-justifiable-after-intels-numbers",
+      "urlToImage": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/540031908/large_image_540031908.jpg",
+      "publishedAt": "2021-10-01T12:30:00Z",
+      "content": "Randy Shropshire/Getty Images Entertainment\r\nToday, the market is a sea of red as the major indexes are significantly lower on the 1-day chart. I have a group stock chat with several of my friends, a… [+9746 chars]"
+    },
+    {
+      "source": {
+        "id": null,
+        "name": "Quartz India"
+      },
+      "author": "Aurora Almendral",
+      "title": "China’s power consumption reflects the role of US shoppers too",
+      "description": "US consumer demand contributes to factory demand for power in China—and the related emissions.",
+      "url": "https://qz.com/2067148/how-us-shoppers-contribute-to-chinas-power-consumption/",
+      "urlToImage": "https://cms.qz.com/wp-content/uploads/2021/09/2021-08-10T035552Z_1789897758_RC2I1P9RXQ5O_RTRMADP_3_HEALTH-CORONAVIRUS-CHINA-e1633083637103.jpg?quality=75&strip=all&w=1200&h=630&crop=1",
+      "publishedAt": "2021-10-01T12:15:59Z",
+      "content": "Across China, lights are flickering off at homes and stoplights. Clothing manufacturers, aluminum smelters and factories turning out components for the likes of Apple and Tesla, are limiting producti… [+3309 chars]"
+    }
+  ]
+}
