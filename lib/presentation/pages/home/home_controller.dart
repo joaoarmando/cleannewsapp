@@ -1,8 +1,8 @@
-import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../domain/repositories/news_repository.dart';
 import '../../../domain/usecases/get_news_by_country.dart';
+import '../../../infra/local_storage/local_storage_errors.dart';
 
 part 'home_controller.g.dart';
 

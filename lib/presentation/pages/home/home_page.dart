@@ -1,4 +1,3 @@
-import 'package:cleannewsapp/presentation/components/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/src/provider.dart';
@@ -10,6 +9,7 @@ import '../../../domain/repositories/news_repository.dart';
 import '../../../infra/http/http_adapter.dart';
 import '../../../infra/local_storage/local_storage_adapter.dart';
 import '../../../infra/network/network_info.dart';
+import '../../components/error_message.dart';
 import '../../components/internet_error.dart';
 import '../../components/loading_indicator.dart';
 import 'components/news_card.dart';
