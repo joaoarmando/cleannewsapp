@@ -9,6 +9,6 @@ class NewsListModel {
   );
 
   Map<String,dynamic> toJson() => {
-    "newsList": news.map((item) => item.toJson()).toList()
+    "news": news.map((item) => item.toJson()).toList()
   };
 }
