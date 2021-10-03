@@ -25,7 +25,7 @@ class NewsModel {
       title: json["title"],
       description: json["description"],
       url: json["url"],
-      urlToImage: json["urlToImagerl"],
+      urlToImage: json["urlToImage"],
       publishedAt: DateTime.parse(json["publishedAt"])
     );
   }

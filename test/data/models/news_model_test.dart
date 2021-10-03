@@ -33,6 +33,7 @@ void main() {
     expect(json["title"], newsModel.title);
     expect(json["description"], newsModel.description);
     expect(json["url"], newsModel.url);
+    expect(json["urlToImage"], newsModel.urlToImage);
     expect(json["publishedAt"], newsModel.publishedAt.toIso8601String());
   });
 
@@ -46,10 +47,12 @@ void main() {
     expect(newsEntity.title, newsModel.title);
     expect(newsEntity.description, newsModel.description);
     expect(newsEntity.url, newsModel.url);
+    expect(newsEntity.urlToImage, newsModel.urlToImage);
     expect(newsEntity.publishedAt, newsModel.publishedAt);
   });
 
   test('Should set a place holder in case urlToImage is null', () {
+    const palceHolderUrl = "https://awlights.com/wp-content/uploads/sites/31/2017/05/placeholder-news.jpg";
     final newsModel = NewsModel.fromJson(newsJson..["urlToImage"] = null);
 
     final newsEntity = newsModel.toEntity();
@@ -59,7 +62,7 @@ void main() {
     expect(newsEntity.title, newsModel.title);
     expect(newsEntity.description, newsModel.description);
     expect(newsEntity.url, newsModel.url);
-    expect(newsEntity.urlToImage, "https://awlights.com/wp-content/uploads/sites/31/2017/05/placeholder-news.jpg");
+    expect(newsEntity.urlToImage, palceHolderUrl);
     expect(newsEntity.publishedAt, newsModel.publishedAt);
   });
 }
