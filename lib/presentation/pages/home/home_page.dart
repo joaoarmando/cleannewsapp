@@ -1,3 +1,4 @@
+import 'package:cleannewsapp/presentation/components/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/src/provider.dart';
@@ -46,6 +47,10 @@ class _HomePageState extends State<HomePage> {
         } else if (homeController.internetError) {
           return Center(
             child: InternetError(retry: homeController.getNewsByCountry)
+          );
+        } else if (homeController.unexpectedError) {
+          return const Center(
+            child: ErrorMessage()
           );
         }
 

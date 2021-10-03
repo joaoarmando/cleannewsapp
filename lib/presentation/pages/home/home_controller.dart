@@ -19,6 +19,9 @@ abstract class _HomeControllerBase with Store {
   @observable
   bool internetError = false;
 
+  @observable
+  bool unexpectedError = false;
+
   ObservableList newsList = ObservableList();
 
   _HomeControllerBase({required this.newsRepository}) {
@@ -27,9 +30,10 @@ abstract class _HomeControllerBase with Store {
 
   @action
   Future<void> getNewsByCountry() async {
+    unexpectedError = false;
     internetError = false;
     _changeLoadingStatus(true);
-    
+
     try {
       final news = await _getNewsByCountry(country);
       newsList.addAll(news);
@@ -37,6 +41,8 @@ abstract class _HomeControllerBase with Store {
       if (error == LocalStorageError.cacheError) {
           internetError = true;
       }
+    } catch (anyError) {
+      unexpectedError = true;
     }
 
     _changeLoadingStatus(false);

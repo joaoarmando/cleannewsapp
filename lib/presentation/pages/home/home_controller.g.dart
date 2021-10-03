@@ -24,6 +24,37 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  final _$internetErrorAtom = Atom(name: '_HomeControllerBase.internetError');
+
+  @override
+  bool get internetError {
+    _$internetErrorAtom.reportRead();
+    return super.internetError;
+  }
+
+  @override
+  set internetError(bool value) {
+    _$internetErrorAtom.reportWrite(value, super.internetError, () {
+      super.internetError = value;
+    });
+  }
+
+  final _$unexpectedErrorAtom =
+      Atom(name: '_HomeControllerBase.unexpectedError');
+
+  @override
+  bool get unexpectedError {
+    _$unexpectedErrorAtom.reportRead();
+    return super.unexpectedError;
+  }
+
+  @override
+  set unexpectedError(bool value) {
+    _$unexpectedErrorAtom.reportWrite(value, super.unexpectedError, () {
+      super.unexpectedError = value;
+    });
+  }
+
   final _$getNewsByCountryAsyncAction =
       AsyncAction('_HomeControllerBase.getNewsByCountry');
 
@@ -35,7 +66,9 @@ mixin _$HomeController on _HomeControllerBase, Store {
   @override
   String toString() {
     return '''
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+internetError: ${internetError},
+unexpectedError: ${unexpectedError}
     ''';
   }
 }
