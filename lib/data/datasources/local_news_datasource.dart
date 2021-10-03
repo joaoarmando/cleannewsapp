@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
-
 import '../../infra/local_storage/local_storage.dart';
+import '../../infra/local_storage/local_storage_errors.dart';
 import '../models/news_list_model.dart';
 import '../models/news_model.dart';
 
