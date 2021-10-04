@@ -15,11 +15,6 @@ void main() {
   late HomePresenter homePresenter;
   late MaterialApp homePage;
 
-  setUp(() {
-     homePresenter = MockHomePresenter();
-     homePage = MaterialApp(home: HomePage(presenter: homePresenter));
-  });
-
   void _mockObservables() {
     when(homePresenter.isLoading).thenReturn(false);
     when(homePresenter.internetError).thenReturn(false);
@@ -27,6 +22,12 @@ void main() {
     when(homePresenter.newsList).thenReturn(mobx.ObservableList());
     when(homePresenter.getNewsByCountry()).thenAnswer((_) async => <NewsEntity>[]);
   }
+
+  setUp(() {
+     homePresenter = MockHomePresenter();
+     homePage = MaterialApp(home: HomePage(presenter: homePresenter));
+     _mockObservables();
+  });
 
   testWidgets('Should start with a loading indicator', (tester) async {
     when(homePresenter.isLoading).thenReturn(true);
@@ -36,7 +37,6 @@ void main() {
   });
 
   testWidgets('Should present only the list of news after a successfull request', (tester) async {
-    _mockObservables();
     await tester.pumpWidget(homePage);
 
     await homePresenter.getNewsByCountry();
@@ -48,7 +48,6 @@ void main() {
   });
 
   testWidgets('Should present only InternetError after a request with no internet connection', (tester) async {
-    _mockObservables();
     when(homePresenter.internetError).thenReturn(true);
     await tester.pumpWidget(homePage);
 
@@ -58,5 +57,15 @@ void main() {
     expect(find.byKey(const Key("loading_key")), findsNothing);
     expect(find.byKey(const Key("news_list_key")), findsNothing);
     expect(find.byKey(const Key("internet_error")), findsOneWidget);
+  });
+
+  testWidgets('Should call retry function when retry button is tapped if InternetError is being presented', (tester) async {
+    when(homePresenter.internetError).thenReturn(true);
+    await tester.pumpWidget(homePage);
+
+    expect(find.byKey(const Key("retry_button")), findsOneWidget);
+
+    tester.tap(find.byKey(const Key("retry_button")));
+    verify(homePresenter.getNewsByCountry());
   });
 }

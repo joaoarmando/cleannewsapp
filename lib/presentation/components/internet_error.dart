@@ -23,6 +23,7 @@ class InternetError extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           retry != null ? TextButton(
+            key: const Key("retry_button"),
             onPressed: retry, 
             child: const Text("Tentar novamente")
           ) : const SizedBox()
