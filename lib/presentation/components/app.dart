@@ -22,14 +22,19 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    final LocalStorageAdapter localStorageAdapter = LocalStorageAdapter(prefs);
+    final HttpAdapter httpAdapter = HttpAdapter(Dio());
+    final NetworkInfoImpl networkInfo = NetworkInfoImpl(InternetConnectionChecker());
+
     const primaryColor = Color(0xff007AFF);
     const primaryColorDark = Color(0xff0060C9);
     const primaryColorLight = Color(0xff3190F7);
+
     return MultiProvider(
       providers: [
-        Provider<LocalStorageAdapter>(create: (_) => LocalStorageAdapter(prefs)),
-        Provider<HttpAdapter>(create: (_) => HttpAdapter(Dio())),
-        Provider<NetworkInfoImpl>(create: (_) => NetworkInfoImpl(InternetConnectionChecker())),
+        Provider<LocalStorageAdapter>(create: (_) => localStorageAdapter),
+        Provider<HttpAdapter>(create: (_) => httpAdapter),
+        Provider<NetworkInfoImpl>(create: (_) => networkInfo),
       ],
       child: MaterialApp(
         title:'Clean News App',
@@ -63,22 +68,27 @@ class App extends StatelessWidget {
             ),
           ),
         ),
-        home: HomePage(presenter: makeHomePresenter(context)),
+        home: HomePage(presenter: makeHomePresenter(
+          localStorageAdapter: localStorageAdapter, 
+          httpAdapter: httpAdapter, 
+          networkInfo: networkInfo
+        )),
       ),
     );
   }
 
-  HomePresenter makeHomePresenter(BuildContext context) {
-    final newsRepository = NewsRepositoryImpl(
-      localDatasource: LocalNewsDatasourceImpl(Provider.of<LocalStorageAdapter>(context)), 
-      remoteDatasource: RemoteNewsDatasourceImpl(
-        client: Provider.of<HttpAdapter>(context),
-        url: "https://newsapi.org/v2/top-headlines", 
-        apiKey: "6656033934ad435aa21cecb22fe5f60b"
-      ), 
-      networkInfo: Provider.of<NetworkInfo>(context),
-    );
+  HomePresenter makeHomePresenter({required LocalStorageAdapter localStorageAdapter, 
+    required HttpAdapter httpAdapter, required NetworkInfo networkInfo}) {
+      final newsRepository = NewsRepositoryImpl(
+        localDatasource: LocalNewsDatasourceImpl(localStorageAdapter), 
+        remoteDatasource: RemoteNewsDatasourceImpl(
+          client: httpAdapter,
+          url: "https://newsapi.org/v2/top-headlines", 
+          apiKey: "6656033934ad435aa21cecb22fe5f60b"
+        ), 
+        networkInfo: networkInfo,
+      );
 
-    return HomeController(newsRepository: newsRepository);
+      return HomeController(newsRepository: newsRepository);
   }
 }
