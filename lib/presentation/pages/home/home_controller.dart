@@ -3,12 +3,13 @@ import 'package:mobx/mobx.dart';
 import '../../../domain/repositories/news_repository.dart';
 import '../../../domain/usecases/get_news_by_country.dart';
 import '../../../infra/local_storage/local_storage_errors.dart';
+import 'home_presenter.dart';
 
 part 'home_controller.g.dart';
 
-class HomeController = _HomeControllerBase with _$HomeController;
+class HomeController = _HomeControllerBase with _$HomeController implements HomePresenter;
 
-abstract class _HomeControllerBase with Store {
+abstract class _HomeControllerBase with Store{
   String country = "us";
   late final NewsRepository newsRepository;
   late final GetNewsByCountry _getNewsByCountry;
@@ -30,7 +31,7 @@ abstract class _HomeControllerBase with Store {
 
   @action
   Future<void> getNewsByCountry() async {
-    unexpectedError = false;
+    _changeUnexpectedErrorStatus(false);
     _changeInternetErrorStatus(false);
     _changeLoadingStatus(true);
 
@@ -42,7 +43,7 @@ abstract class _HomeControllerBase with Store {
           _changeInternetErrorStatus(true);
       }
     } catch (anyError) {
-      unexpectedError = true;
+      _changeUnexpectedErrorStatus(true);
     }
 
     _changeLoadingStatus(false);
@@ -54,4 +55,6 @@ abstract class _HomeControllerBase with Store {
   void _changeLoadingStatus(bool loading) => isLoading = loading;
 
   void _changeInternetErrorStatus(bool hasError) => internetError = hasError;
+
+  void _changeUnexpectedErrorStatus(bool hasError) => unexpectedError = hasError;
 }

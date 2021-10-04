@@ -100,6 +100,18 @@ void main() {
   });
 
   group('unexpectedError', () {
+
+    test('Should set unexpectedError as false while retrieving data', () async {
+      controller.unexpectedError = true;
+      final emitedUnexpectedErrorStates = [];    
+      final dispose = mobx.reaction((_) => controller.unexpectedError, (newValue) => emitedUnexpectedErrorStates.add(newValue));
+
+      await controller.getNewsByCountry();
+
+      expect(emitedUnexpectedErrorStates, [false]);
+      dispose();
+    });
+
     test('Should set unexpectedError as true when an occurs', () async {
       _mockRepositoryException(Exception());
 

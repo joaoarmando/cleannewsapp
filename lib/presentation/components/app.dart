@@ -5,10 +5,15 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/datasources/local_news_datasource.dart';
+import '../../data/datasources/remote_news_datasource.dart';
+import '../../data/repositories/news_repository_impl.dart';
 import '../../infra/http/http_adapter.dart';
 import '../../infra/local_storage/local_storage_adapter.dart';
 import '../../infra/network/network_info.dart';
+import '../pages/home/home_controller.dart';
 import '../pages/home/home_page.dart';
+import '../pages/home/home_presenter.dart';
 
 class App extends StatelessWidget {
   final SharedPreferences prefs;
@@ -58,8 +63,22 @@ class App extends StatelessWidget {
             ),
           ),
         ),
-        home: const HomePage(),
+        home: HomePage(presenter: makeHomePresenter(context)),
       ),
     );
+  }
+
+  HomePresenter makeHomePresenter(BuildContext context) {
+    final newsRepository = NewsRepositoryImpl(
+      localDatasource: LocalNewsDatasourceImpl(Provider.of<LocalStorageAdapter>(context)), 
+      remoteDatasource: RemoteNewsDatasourceImpl(
+        client: Provider.of<HttpAdapter>(context),
+        url: "https://newsapi.org/v2/top-headlines", 
+        apiKey: "6656033934ad435aa21cecb22fe5f60b"
+      ), 
+      networkInfo: Provider.of<NetworkInfo>(context),
+    );
+
+    return HomeController(newsRepository: newsRepository);
   }
 }

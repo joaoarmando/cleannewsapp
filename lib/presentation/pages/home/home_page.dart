@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/src/provider.dart';
 
-import '../../../data/datasources/local_news_datasource.dart';
-import '../../../data/datasources/remote_news_datasource.dart';
-import '../../../data/repositories/news_repository_impl.dart';
-import '../../../domain/repositories/news_repository.dart';
-import '../../../infra/http/http_adapter.dart';
-import '../../../infra/local_storage/local_storage_adapter.dart';
-import '../../../infra/network/network_info.dart';
 import '../../components/error_message.dart';
 import '../../components/internet_error.dart';
 import '../../components/loading_indicator.dart';
 import 'components/news_card.dart';
-import 'home_controller.dart';
+import 'home_presenter.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({ Key? key }) : super(key: key);
+  final HomePresenter presenter;
+  const HomePage({ Key? key, required this.presenter }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late HomeController homeController;
-  late NewsRepository newsRepository;
 
   @override
   void initState() {
-    _setupPage();
+    widget.presenter.getNewsByCountry();
     super.initState();
   }
 
@@ -40,49 +31,34 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Observer(builder: (_) {
 
-        if (homeController.isLoading) {
+        if (widget.presenter.isLoading) {
           return const Center(
-            child:LoadingIndicator()
+            child: LoadingIndicator(key: Key("loading_key"),)
           );
-        } else if (homeController.internetError) {
+        } else if (widget.presenter.internetError) {
           return Center(
-            child: InternetError(retry: homeController.getNewsByCountry)
+            child: InternetError(
+              key: const Key("internet_error"),
+              retry: widget.presenter.getNewsByCountry
+            )
           );
-        } else if (homeController.unexpectedError) {
+        } else if (widget.presenter.unexpectedError) {
           return const Center(
             child: ErrorMessage()
           );
         }
 
         return ListView.builder(
-          itemCount: homeController.newsList.length,
+          key: const Key("news_list_key"),
+          itemCount: widget.presenter.newsList.length,
           itemBuilder: (_, index) {
-            final news = homeController.newsList[index];
+            final news = widget.presenter.newsList[index];
             return NewsCard(news: news);
           }
         );
       },
       ),
     );
-  }
-
-  void _setupPage() {
-    final localStorage = context.read<LocalStorageAdapter>();
-    final httpAdapter = context.read<HttpAdapter>();
-    final networkInfo = context.read<NetworkInfoImpl>();
-
-    newsRepository = NewsRepositoryImpl(
-      localDatasource: LocalNewsDatasourceImpl(localStorage), 
-      remoteDatasource: RemoteNewsDatasourceImpl(
-        client: httpAdapter,
-        url: "https://newsapi.org/v2/top-headlines", 
-        apiKey: "6656033934ad435aa21cecb22fe5f60b"
-      ), 
-      networkInfo: networkInfo,
-    );
-
-    homeController = HomeController(newsRepository: newsRepository);
-    homeController.getNewsByCountry();
   }
 
 }
