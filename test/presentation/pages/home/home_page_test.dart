@@ -36,14 +36,18 @@ void main() {
     expect(find.byKey(const Key("loading_key")), findsOneWidget);
   });
 
+  testWidgets('Should call controller.getNewsByCountry when the page is started', (tester) async {
+    await tester.pumpWidget(homePage);
+
+    verify(homePresenter.getNewsByCountry()).called(1);
+  });
+
   testWidgets('Should present only the list of news after a successfull request', (tester) async {
     await tester.pumpWidget(homePage);
 
-    await homePresenter.getNewsByCountry();
-    await tester.pump();
-
     expect(find.byKey(const Key("loading_key")), findsNothing);
     expect(find.byKey(const Key("internet_error")), findsNothing);
+    expect(find.byKey(const Key("unexpected_error")), findsNothing);
     expect(find.byKey(const Key("news_list_key")), findsOneWidget);
   });
 
@@ -51,11 +55,9 @@ void main() {
     when(homePresenter.internetError).thenReturn(true);
     await tester.pumpWidget(homePage);
 
-    await homePresenter.getNewsByCountry();
-    await tester.pump();
-
     expect(find.byKey(const Key("loading_key")), findsNothing);
     expect(find.byKey(const Key("news_list_key")), findsNothing);
+    expect(find.byKey(const Key("unexpected_error")), findsNothing);
     expect(find.byKey(const Key("internet_error")), findsOneWidget);
   });
 
