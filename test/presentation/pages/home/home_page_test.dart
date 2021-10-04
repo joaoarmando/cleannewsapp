@@ -68,4 +68,14 @@ void main() {
     tester.tap(find.byKey(const Key("retry_button")));
     verify(homePresenter.getNewsByCountry());
   });
+
+  testWidgets('Should present only UnexpectedError after a failed request', (tester) async {
+    when(homePresenter.unexpectedError).thenReturn(true);
+    await tester.pumpWidget(homePage);
+
+    expect(find.byKey(const Key("loading_key")), findsNothing);
+    expect(find.byKey(const Key("news_list_key")), findsNothing);
+    expect(find.byKey(const Key("internet_error")), findsNothing);
+    expect(find.byKey(const Key("unexpected_error")), findsOneWidget);
+  });
 }

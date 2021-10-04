@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'subtitle1.dart';
 import 'subtitle2.dart';
 
-class ErrorMessage extends StatelessWidget {
-  const ErrorMessage({ Key? key}) : super(key: key);
+class UnexpectedError extends StatelessWidget {
+  const UnexpectedError({ Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

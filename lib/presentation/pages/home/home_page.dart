@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
           );
         } else if (widget.presenter.unexpectedError) {
           return const Center(
-            child: ErrorMessage()
+            child: UnexpectedError(key: Key("unexpected_error"),)
           );
         }
 
