@@ -69,6 +69,18 @@ void main() {
 
 
   group('InternetError', () {
+
+    test('Should set internetError as false while retrieving data', () async {
+      controller.internetError = true;
+      final emitedInternetErrorStates = [];    
+      final dispose = mobx.reaction((_) => controller.internetError, (newValue) => emitedInternetErrorStates.add(newValue));
+
+      await controller.getNewsByCountry();
+
+      expect(emitedInternetErrorStates, [false]);
+      dispose();
+    });
+
     test('Should set internetError as true when has no internet connection', () async {
       _mockRepositoryException(LocalStorageError.cacheError);
 

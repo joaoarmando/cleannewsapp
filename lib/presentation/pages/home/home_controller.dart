@@ -31,7 +31,7 @@ abstract class _HomeControllerBase with Store {
   @action
   Future<void> getNewsByCountry() async {
     unexpectedError = false;
-    internetError = false;
+    _changeInternetErrorStatus(false);
     _changeLoadingStatus(true);
 
     try {
@@ -39,7 +39,7 @@ abstract class _HomeControllerBase with Store {
       newsList.addAll(news);
     } on LocalStorageError catch(error) {
       if (error == LocalStorageError.cacheError) {
-          internetError = true;
+          _changeInternetErrorStatus(true);
       }
     } catch (anyError) {
       unexpectedError = true;
@@ -52,4 +52,6 @@ abstract class _HomeControllerBase with Store {
   void setNewsCountry(String newsCountry) => country = newsCountry; 
 
   void _changeLoadingStatus(bool loading) => isLoading = loading;
+
+  void _changeInternetErrorStatus(bool hasError) => internetError = hasError;
 }
