@@ -1,8 +1,10 @@
 import 'package:cleannewsapp/domain/entities/news_entity.dart';
+import 'package:cleannewsapp/domain/errors/domain_error.dart';
 import 'package:cleannewsapp/domain/repositories/news_repository.dart';
 import 'package:cleannewsapp/infra/local_storage/local_storage_errors.dart';
 import 'package:cleannewsapp/presentation/pages/home/home_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -17,13 +19,14 @@ void main() {
   late NewsEntity tNewsEntity;
 
   PostExpectation _mockRepositoryRequest()
-   =>  when(repository.getNewsByCountry(newsCountry));
+    => when(repository.getNewsByCountry(newsCountry));
 
-  void _mockRepositoryResponse()
-   => _mockRepositoryRequest().thenAnswer((_) async => [tNewsEntity]);
+  void _mockRepositoryRightResponse(Right<DomainError, List<NewsEntity>> response)
+    => _mockRepositoryRequest().thenAnswer((_) async => response);
 
-  void _mockRepositoryException(dynamic excpetion) 
-    => _mockRepositoryRequest().thenThrow(excpetion);
+  void _mockRepositoryLeftResponse(Left<DomainError, List<NewsEntity>> response)
+    => _mockRepositoryRequest().thenAnswer((_) async => response);
+
 
   setUp(() {
     newsCountry = "any_country";
@@ -39,7 +42,7 @@ void main() {
       urlToImage: "any_urlToImage",
       publishedAt: DateTime.now()
     );
-    _mockRepositoryResponse();
+    _mockRepositoryRightResponse(Right<DomainError, List<NewsEntity>>([tNewsEntity]));
   });
 
   test('Should set the news country correctly', () {
@@ -82,7 +85,7 @@ void main() {
     });
 
     test('Should set internetError as true when has no internet connection', () async {
-      _mockRepositoryException(LocalStorageError.cacheError);
+      _mockRepositoryLeftResponse(Left(DomainError.noInternetConnection));
 
       await controller.getNewsByCountry();
 
@@ -113,7 +116,7 @@ void main() {
     });
 
     test('Should set unexpectedError as true when an occurs', () async {
-      _mockRepositoryException(Exception());
+      _mockRepositoryLeftResponse(Left(DomainError.unexpected));
 
       await controller.getNewsByCountry();
 

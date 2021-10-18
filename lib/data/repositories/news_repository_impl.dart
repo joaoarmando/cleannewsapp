@@ -1,3 +1,5 @@
+import 'package:fpdart/fpdart.dart';
+
 import '../../domain/entities/news_entity.dart';
 import '../../domain/errors/domain_error.dart';
 import '../../domain/repositories/news_repository.dart';
@@ -19,7 +21,7 @@ class NewsRepositoryImpl implements NewsRepository {
   });
 
   @override
-  Future<List<NewsEntity>> getNewsByCountry(String country) async {
+  Future<Either<DomainError, List<NewsEntity>>> getNewsByCountry(String country) async {
     late final List<NewsModel> news;
     try {
       if (await networkInfo.isConnected) {
@@ -30,13 +32,13 @@ class NewsRepositoryImpl implements NewsRepository {
           news = await localDatasource.getNewsByCountryFromCache(country: country);
       }
 
-      return news.map((item) => item.toEntity()).toList();
+      return Right(news.map((item) => item.toEntity()).toList());
 
     } on LocalStorageError catch (error) {
       if (error == LocalStorageError.cacheError) {
-          throw DomainError.noInternetConnection;
+          return const Left(DomainError.noInternetConnection);
       } else {
-        throw DomainError.unexpected;
+        return const Left(DomainError.unexpected);
       }
     }    
   }

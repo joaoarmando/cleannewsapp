@@ -1,3 +1,4 @@
+import 'package:cleannewsapp/domain/errors/domain_error.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../domain/repositories/news_repository.dart';
@@ -35,16 +36,14 @@ abstract class _HomeControllerBase with Store{
     _changeInternetErrorStatus(false);
     _changeLoadingStatus(true);
 
-    try {
-      final news = await _getNewsByCountry(country);
-      newsList.addAll(news);
-    } on LocalStorageError catch(error) {
-      if (error == LocalStorageError.cacheError) {
-          _changeInternetErrorStatus(true);
-      }
-    } catch (anyError) {
-      _changeUnexpectedErrorStatus(true);
-    }
+    final domainErrorOrNews = await _getNewsByCountry(country);
+
+    domainErrorOrNews.fold(
+      (domainError) => domainError == DomainError.noInternetConnection 
+        ? _changeInternetErrorStatus(true) 
+        : _changeUnexpectedErrorStatus(true), 
+      (news) => newsList.addAll(news)
+    );
 
     _changeLoadingStatus(false);
   }
